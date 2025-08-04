@@ -1,0 +1,41 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "MVP.Common/1.0.0": {
+        "dependencies": {
+          "Sentry": "5.3.0"
+        },
+        "runtime": {
+          "MVP.Common.dll": {}
+        }
+      },
+      "Sentry/5.3.0": {
+        "runtime": {
+          "lib/net8.0/Sentry.dll": {
+            "assemblyVersion": "5.3.0.0",
+            "fileVersion": "5.3.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "MVP.Common/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Sentry/5.3.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-zlBIP7YmYxySwcgapLMj1gdxPEz9rwdrOa4Yjub/TzcAaMQXusRH9hY4CE6pu0EIibZ7C7Hhjhr6xOTlyK8gFQ==",
+      "path": "sentry/5.3.0",
+      "hashPath": "sentry.5.3.0.nupkg.sha512"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "6TBI9UUnygJyjGdwAaefIhekGl5Xf+dt3c5HE2/hudsr+LzVy06v0fjeTXZQSNdF9AkMS5/Z2+t2psKea7IV8g==",
+  "success": true,
+  "projectFilePath": "/Users/james/Projects/MVP/MVP.Common/MVP.Common.csproj",
+  "expectedPackageFiles": [
+    "/Users/james/.nuget/packages/sentry/5.3.0/sentry.5.3.0.nupkg.sha512"
+  ],
+  "logs": []
+}
