@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVP.Common", "MVP.Common\MV
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVP.IOS", "MVP.IOS\MVP.IOS.csproj", "{4B31A473-3225-4311-AD17-80ADF5E6670F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVP.Android", "MVP.Android\MVP.Android.csproj", "{691E52FA-A96B-4E35-B2C6-9EEE014CD063}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{4B31A473-3225-4311-AD17-80ADF5E6670F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B31A473-3225-4311-AD17-80ADF5E6670F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B31A473-3225-4311-AD17-80ADF5E6670F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{691E52FA-A96B-4E35-B2C6-9EEE014CD063}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{691E52FA-A96B-4E35-B2C6-9EEE014CD063}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{691E52FA-A96B-4E35-B2C6-9EEE014CD063}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{691E52FA-A96B-4E35-B2C6-9EEE014CD063}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
