@@ -1,9 +1,6 @@
-﻿<Properties StartupConfiguration="{D653345F-71A0-4767-BD78-8DF15D278D95}|Default">
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints />
-  <MonoDevelop.Ide.ItemProperties.MVP.IOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.DCD79B83-9BDA-4D61-9EF0-5DD95DA38733" />
+﻿<Properties StartupConfiguration="{4B31A473-3225-4311-AD17-80ADF5E6670F}|Default">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.MVP.IOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.DCD79B83-9BDA-4D61-9EF0-5DD95DA38733" />
   <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
@@ -15,4 +12,6 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
