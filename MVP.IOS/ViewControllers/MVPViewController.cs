@@ -2,164 +2,142 @@
 using MVP.Common.Interfaces.Presenters;
 using MVP.Common.Interfaces.Views;
 
-namespace MVP.IOS.ViewControllers
+namespace MVP.IOS.ViewControllers;
+
+public partial class MVPViewController :
+    ViewControllerBase,
+    IMPVView,
+    IMPVViewActions
 {
-    public partial class MVPViewController : ViewControllerBase, IMPVView
+    private readonly IMVPPagePresenter _presenter;
+    private UIActivityIndicatorView? _loadingIndicator;
+
+    // Inject dependencies
+    public MVPViewController(
+        PresenterInvoker invoker,
+        IMVPPagePresenter presenter) : base(invoker)
     {
-        private readonly IMVPPagePresenter _presenter;
-        private UIActivityIndicatorView? _loadingIndicator;
+        _presenter = presenter;
+        _presenter.AttachView(this);
+    }
 
-        // Inject dependencies
-        public MVPViewController(
-            PresenterInvoker invoker,
-            IMVPPagePresenter presenter) : base(invoker)
+    //UI Construction
+    public override void ViewDidLoad()
+    {
+        base.ViewDidLoad();
+
+        View!.BackgroundColor = UIColor.Yellow;
+
+        var scrollView = new UIScrollView(View.Bounds)
         {
-            _presenter = presenter;
-            _presenter.AttachView(this);
-        }
+            AutoresizingMask = UIViewAutoresizing.FlexibleDimensions
+        };
 
-        //demo code to create a simple view
-        public override void ViewDidLoad()
+        _loadingIndicator = new UIActivityIndicatorView(UIActivityIndicatorViewStyle.Large)
         {
-            base.ViewDidLoad();
+            Center = View.Center,
+            HidesWhenStopped = true
+        };
+        View.AddSubview(_loadingIndicator);
 
-            View!.BackgroundColor = UIColor.Yellow;
+        var buttonHeight = 50;
+        var buttonWidth = 200;
+        var verticalSpacing = 20;
+        var startY = 100;
+        var currentY = startY;
 
-            var scrollView = new UIScrollView(View.Bounds)
+        void AddButton(string title, Action viewMethod)
+        {
+            var button = new UIButton(UIButtonType.System)
             {
-                AutoresizingMask = UIViewAutoresizing.FlexibleDimensions
+                Frame = new CGRect(100, currentY, buttonWidth, buttonHeight)
             };
-
-            _loadingIndicator = new UIActivityIndicatorView(UIActivityIndicatorViewStyle.Large)
-            {
-                Center = View.Center,
-                HidesWhenStopped = true
-            };
-            View.AddSubview(_loadingIndicator);
-
-            var buttonHeight = 50;
-            var buttonWidth = 200;
-            var verticalSpacing = 20;
-            var startY = 100;
-            var currentY = startY;
-
-            void AddButton(string title, Action action)
-            {
-                var button = new UIButton(UIButtonType.System)
-                {
-                    Frame = new CGRect(100, currentY, buttonWidth, buttonHeight)
-                };
-                button.SetTitle(title, UIControlState.Normal);
-                button.TouchUpInside += (s, e) =>
-                {
-                    //call action with invoke to wrap it in a try catch
-                    var result = Invoke(action, title);
-                    if (!result.IsSuccess)
-                    {
-                        ShowMessage($"Error: {result.Exception?.Message ?? "Unknown Error"}");
-                    }
-                    else
-                    {
-                        ShowMessage($"Success: {title} executed successfully.");
-                    }
-                };
-                scrollView.AddSubview(button);
-                currentY += buttonHeight + verticalSpacing;
-            }
-
-            void AddButtonThatReturnsValue<T>(string title, Func<T> func)
-            {
-                var button = new UIButton(UIButtonType.System)
-                {
-                    Frame = new CGRect(100, currentY, buttonWidth, buttonHeight)
-                };
-                button.SetTitle(title, UIControlState.Normal);
-                button.TouchUpInside += (s, e) =>
-                {
-                    var result = Invoke(func, title);
-                    if (result.IsSuccess)
-                    {
-                        ShowMessage($"Success: {result.Value}");
-                    }
-                    else
-                    {
-                        ShowMessage($"Error: {result.Exception?.Message ?? "Unknown Error"}");
-                    }
-                };
-                scrollView.AddSubview(button);
-                currentY += buttonHeight + verticalSpacing;
-            }
-
-            void AddAsyncButton(string title, Func<Task> asyncAction)
-            {
-                var button = new UIButton(UIButtonType.System)
-                {
-                    Frame = new CGRect(100, currentY, buttonWidth, buttonHeight)
-                };
-                button.SetTitle(title, UIControlState.Normal);
-                button.TouchUpInside += async (s, e) =>
-                {
-                    _loadingIndicator?.StartAnimating();
-                    var result = await InvokeAsync(asyncAction, title);
-                    _loadingIndicator?.StopAnimating();
-
-                    if (!result.IsSuccess)
-                    {
-                        ShowMessage($"Error: {result.Exception?.Message ?? "Unknown Error"}");
-                    }
-                    else
-                    {
-                        ShowMessage($"Success: {title} executed successfully.");
-                    }
-                };
-                scrollView.AddSubview(button);
-                currentY += buttonHeight + verticalSpacing;
-            }
-
-            void AddAsyncButtonThatReturnsValue<T>(string title, Func<Task<T>> asyncFunc)
-            {
-                var button = new UIButton(UIButtonType.System)
-                {
-                    Frame = new CGRect(100, currentY, buttonWidth, buttonHeight)
-                };
-                button.SetTitle(title, UIControlState.Normal);
-                button.TouchUpInside += async (s, e) =>
-                {
-                    _loadingIndicator?.StartAnimating();
-                    var result = await InvokeAsync(asyncFunc, title);
-                    _loadingIndicator?.StopAnimating();
-
-                    if (result.IsSuccess)
-                    {
-                        ShowMessage($"Success: {result.Value}");
-                    }
-                    else
-                    {
-                        ShowMessage($"Error: {result.Exception?.Message ?? "Unknown Error"}");
-                    }
-                };
-                scrollView.AddSubview(button);
-                currentY += buttonHeight + verticalSpacing;
-            }
-
-            // Add Buttons
-            AddButton("Handled Error", _presenter.SimulateHandledError);
-            AddButton("Null Reference", _presenter.SimulateNullReference);
-            AddButton("Invalid Operation", _presenter.SimulateInvalidOperation);
-            AddButton("Bad Argument", _presenter.SimulateBadArgument);
-            AddButton("Service Failure", _presenter.SimulateServiceFailure);
-            AddButtonThatReturnsValue("Get Data", _presenter.GetData);
-            AddAsyncButtonThatReturnsValue("Async API Failure", _presenter.SimulateAsyncApiFailure);
-
-            scrollView.ContentSize = new CGSize(View.Bounds.Width, currentY + 100);
-            View.AddSubview(scrollView);
+            button.SetTitle(title, UIControlState.Normal);
+            button.TouchUpInside += (s, e) => viewMethod();
+            scrollView.AddSubview(button);
+            currentY += buttonHeight + verticalSpacing;
         }
 
-        public void ShowMessage(string value)
+        void AddAsyncButtonThatReturnsValue(string title, Func<Task> viewMethod)
         {
-            var alert = UIAlertController.Create("Notice", value, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
-            PresentViewController(alert, true, null);
+            var button = new UIButton(UIButtonType.System)
+            {
+                Frame = new CGRect(100, currentY, buttonWidth, buttonHeight)
+            };
+            button.SetTitle(title, UIControlState.Normal);
+            button.TouchUpInside += async (s, e) => await viewMethod();
+            scrollView.AddSubview(button);
+            currentY += buttonHeight + verticalSpacing;
         }
+
+        // Add Buttons
+        AddButton("Handled Error", OnHandledErrorButtonClicked);
+        AddButton("Null Reference", OnNullReferenceButtonClicked);
+        AddButton("Invalid Operation", OnInvalidOperationButtonClicked);
+        AddButton("Bad Argument", OnBadArgumentButtonClicked);
+        AddButton("Service Failure", OnServiceFailureButtonClicked);
+        AddButton("Get Data", OnGetDataButtonClicked);
+        AddAsyncButtonThatReturnsValue("Async API Failure", OnAsyncApiFailureButtonClicked);
+
+        scrollView.ContentSize = new CGSize(View.Bounds.Width, currentY + 100);
+        View.AddSubview(scrollView);
+    }
+
+
+    //IMPVViewActions implementation
+    public void OnHandledErrorButtonClicked()
+    {
+        var result = Invoke(_presenter.SimulateHandledError, "Handled Error");
+        ShowMessage(result.IsSuccess ? "Success" : $"Error: {result.Exception?.Message ?? "Unknown Error"}");
+    }
+
+    public void OnNullReferenceButtonClicked()
+    {
+        var result = Invoke(_presenter.SimulateNullReference, "Null Reference");
+        ShowMessage(result.IsSuccess ? "Success" : $"Error: {result.Exception?.Message ?? "Unknown Error"}");
+    }
+
+    public void OnInvalidOperationButtonClicked()
+    {
+        var result = Invoke(_presenter.SimulateInvalidOperation, "Invalid Operation");
+        ShowMessage(result.IsSuccess ? "Success" : $"Error: {result.Exception?.Message ?? "Unknown Error"}");
+    }
+
+    public void OnBadArgumentButtonClicked()
+    {
+        var result = Invoke(_presenter.SimulateBadArgument, "Bad Argument");
+        ShowMessage(result.IsSuccess ? "Success" : $"Error: {result.Exception?.Message ?? "Unknown Error"}");
+    }
+
+    public void OnServiceFailureButtonClicked()
+    {
+        var result = Invoke(_presenter.SimulateServiceFailure, "Service Failure");
+        ShowMessage(result.IsSuccess ? "Success" : $"Error: {result.Exception?.Message ?? "Unknown Error"}");
+    }
+
+    public void OnGetDataButtonClicked()
+    {
+        var result = Invoke(_presenter.GetData, "Get Data");
+        ShowMessage(result.IsSuccess ? $"Success: {result.Value}" : $"Error: {result.Exception?.Message ?? "Unknown Error"}");
+    }
+
+    public async Task OnAsyncApiFailureButtonClicked()
+    {
+        _loadingIndicator?.StartAnimating();
+        var result = await InvokeAsync(_presenter.SimulateAsyncApiFailure, "Async API Failure");
+        _loadingIndicator?.StopAnimating();
+
+        if (result.IsSuccess)
+            ShowMessage($"Success: {result.Value}");
+        else
+            ShowMessage($"Error: {result.Exception?.Message ?? "Unknown Error"}");
+    }
+
+    //IMPVView implementation
+    public void ShowMessage(string value)
+    {
+        var alert = UIAlertController.Create("Notice", value, UIAlertControllerStyle.Alert);
+        alert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Default, null));
+        PresentViewController(alert, true, null);
     }
 }

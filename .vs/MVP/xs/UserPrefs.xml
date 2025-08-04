@@ -1,5 +1,5 @@
-﻿<Properties StartupConfiguration="{691E52FA-A96B-4E35-B2C6-9EEE014CD063}|Default">
-  <MonoDevelop.Ide.ItemProperties.MVP.Android AndroidDesignerPreferredDevice="Nexus 4" PreferredExecutionTarget="Android.Pixel_8_API_36" />
+﻿<Properties StartupConfiguration="{4B31A473-3225-4311-AD17-80ADF5E6670F}|Default">
+  <MonoDevelop.Ide.ItemProperties.MVP.Android AndroidDesignerPreferredDevice="Nexus 4" PreferredExecutionTarget="Android.emulator-5554" />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.ItemProperties.MVP.IOS PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.DCD79B83-9BDA-4D61-9EF0-5DD95DA38733" />
   <MonoDevelop.Ide.Workbench>

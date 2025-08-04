@@ -18,3 +18,4 @@ public interface IMPVView : IView
 {
     void ShowMessage(string value);
 }
+
