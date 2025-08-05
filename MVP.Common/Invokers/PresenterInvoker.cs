@@ -27,6 +27,21 @@ namespace MVP.Common.Interceptors;
 /// {
 ///     ShowError(result.Exception?.Message);
 /// }
+///
+/// 
+///Pros of DI-injected Instance:
+/// - Enables Dependency Injection for easy mocking in unit tests.
+/// - Allows future expansion with per-instance configuration (e.g., user context, logging options).
+/// - Keeps a clear separation of concerns between utility helpers and presenter orchestration.
+/// 
+/// Cons:
+/// - Slightly more boilerplate compared to static methods for simple, stateless invocation.
+/// - Requires DI setup in constructors, even when only used as a simple wrapper.
+/// 
+/// Alternative:
+/// - Could be made static if mocking, configurability, or DI consistency is not required.
+/// - For pure utility methods (e.g., background task wrappers), a static SafeTaskRunner can be used alongside.
+/// 
 /// </summary>
 public class PresenterInvoker
 {

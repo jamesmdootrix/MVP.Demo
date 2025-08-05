@@ -1,4 +1,5 @@
-﻿using MVP.Common.Interfaces.Views;
+﻿using System.Security.Cryptography;
+using MVP.Common.Interfaces.Views;
 
 namespace MVP.Common.Interfaces.Presenters;
 
@@ -25,6 +26,8 @@ public interface IMVPPagePresenter : IPresenter<IMPVView>
     void SimulateInvalidOperation();
     void SimulateBadArgument();
     void SimulateServiceFailure();
+    void SimulateBackgroundThreadNullReference();
+    void SimulateBackgroundThreadUnhandledNullReference();
     Task<string> SimulateAsyncApiFailure();
     string GetData();
 }

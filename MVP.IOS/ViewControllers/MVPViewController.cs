@@ -77,6 +77,8 @@ public partial class MVPViewController :
         AddButton("Bad Argument", OnBadArgumentButtonClicked);
         AddButton("Service Failure", OnServiceFailureButtonClicked);
         AddButton("Get Data", OnGetDataButtonClicked);
+        AddButton("BackgroundThread Null Reference", OnNullReferenceInBackgrounThreadClicked);
+        AddButton("BackgroundThread Null Reference (unhandled)", OnNullReferenceInBackgrounThreadClicked);
         AddAsyncButtonThatReturnsValue("Async API Failure", OnAsyncApiFailureButtonClicked);
 
         scrollView.ContentSize = new CGSize(View.Bounds.Width, currentY + 100);
@@ -119,6 +121,18 @@ public partial class MVPViewController :
     {
         var result = Invoke(_presenter.GetData, "Get Data");
         ShowMessage(result.IsSuccess ? $"Success: {result.Value}" : $"Error: {result.Exception?.Message ?? "Unknown Error"}");
+    }
+   
+    public void OnNullReferenceInBackgrounThreadClicked()
+    {
+        var result = Invoke(_presenter.SimulateBackgroundThreadNullReference, "Null Reference");
+        ShowMessage(result.IsSuccess ? "Success" : $"Error: {result.Exception?.Message ?? "Unknown Error"}");
+    }
+
+    public void OnUnhandledNullReferenceInBackgrounThreadClicked()
+    {
+        var result = Invoke(_presenter.SimulateBackgroundThreadUnhandledNullReference, "Null Reference");
+        ShowMessage(result.IsSuccess ? "Success" : $"Error: {result.Exception?.Message ?? "Unknown Error"}");
     }
 
     public async Task OnAsyncApiFailureButtonClicked()

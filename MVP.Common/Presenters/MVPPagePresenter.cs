@@ -1,5 +1,6 @@
 ﻿using MVP.Common.Interfaces.Presenters;
 using MVP.Common.Interfaces.Views;
+using MVP.Common.Invokers;
 using MVP.Common.Presenters;
 
 namespace MVP.Common;
@@ -70,5 +71,37 @@ public class MVPPagePresenter : PresenterBase<IMPVView>, IMVPPagePresenter
     public string GetData()
     {
         return "Here's some data from the Presenter";
+    }
+
+    //this will createa background thread, and will catch the error inside the thread on non awaited Task.Run's
+    //and log to sentry.
+    //if task.run is awaited, then just use regular task.run, no need for SafeTaskRunner.Run
+    public void SimulateBackgroundThreadNullReference()
+    {
+        SafeTaskRunner.Run(() =>
+        {
+            //simulate long running background thread
+            Thread.Sleep(3000);
+            // Background task logic
+            throw new NullReferenceException("Caught and bubbled up to caller");
+        });
+    }
+
+    //this will be caught by sentry as it is awaited
+    public async Task SimulateBackgroundThreadNullReferenceWillCatch()
+    {
+        await Task.Run(() =>
+        {
+            //simulate long running background thread
+            Thread.Sleep(3000);
+            // Background task logic
+            throw new NullReferenceException("Caught and bubbled up to caller");
+        });
+    }
+
+    //sentry will not pick up this crash
+    public void SimulateBackgroundThreadUnhandledNullReference()
+    {
+        Task.Run(() => throw new NullReferenceException("This won't be caught"));
     }
 }

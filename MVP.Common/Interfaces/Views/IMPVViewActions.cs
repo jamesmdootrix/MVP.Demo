@@ -20,6 +20,8 @@ public interface IMPVViewActions
     void OnBadArgumentButtonClicked();
     void OnServiceFailureButtonClicked();
     void OnGetDataButtonClicked();
+    void OnNullReferenceInBackgrounThreadClicked();
+    void OnUnhandledNullReferenceInBackgrounThreadClicked();
     Task OnAsyncApiFailureButtonClicked();
 }
 
